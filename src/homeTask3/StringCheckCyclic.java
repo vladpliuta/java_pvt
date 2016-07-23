@@ -3,7 +3,9 @@ package homeTask3;
 *
 *@author Vladimir Pliuta
 */
-public static boolean isSubstring (String s1, String s2) { //create method
+public class StringCheckCyclic {
+	
+	public static boolean isSubstring (String s1, String s2) { //create method
 		/* я бы конечно назвал бы firstString и secondString, 
 		 * ведь типа цифры в названии перевеменных это не красиво - 
 		 * но увы увы - таково условие задачи
