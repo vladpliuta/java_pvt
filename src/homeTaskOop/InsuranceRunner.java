@@ -2,8 +2,9 @@ package homeTaskOop;
 
 import java.text.DateFormat;
 /**
+ * класс запуска приложения, создания списка страховок, меню
+ * @author Vladimir Pliuta
  * 
-* @author Vladimir Pliuta
  */
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +48,7 @@ public class InsuranceRunner {
 
 		while (!exit) {
 			ResourceBundle rb = ResourceBundle.getBundle("homeTaskOop/languages", nowLocale);
+			Logger.INSTANCE.getLog("programm start");
 			// вывод текущей даты и времени
 			Date now = new Date();
 			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, nowLocale);
@@ -63,14 +65,17 @@ public class InsuranceRunner {
 			switch (numMenu) {
 			case 1:
 				nowLocale = rusLocale;
+				Logger.INSTANCE.getLog("select russian language");
 				break;
 			case 2:
 				nowLocale = engLocale;
+				Logger.INSTANCE.getLog("select english language");
 				break;
 			// выводим сумму страховок
 			case 3:
 				System.out.print(rb.getString("sumPayout"));
 				System.out.println(InsurensMethods.sumPayout(insuranceBase) + "\n");
+				Logger.INSTANCE.getLog("display the sum of all insurances");
 				break;
 			// выводим список страховок соответствующих выбору пользователя
 			case 4:
@@ -80,11 +85,13 @@ public class InsuranceRunner {
 				double endPayout = sc.nextInt();
 				InsurensMethods.findByPayout(insuranceBase, firstPayout, endPayout);
 				exit = true;
+				Logger.INSTANCE.getLog("to display a list of insurances on the necessary criteria");
 				break;
 			case 5:
 				exit = true;
 				break;
 			}
+			Logger.INSTANCE.getLog("programm end");
 		}
 	}
 }
