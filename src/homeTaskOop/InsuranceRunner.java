@@ -1,9 +1,15 @@
 package homeTaskOop;
 
+import java.text.DateFormat;
+/**
+ * 
+* @author Vladimir Pliuta
+ */
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import homeTaskOop.insurance.Insurance;
@@ -20,47 +26,65 @@ import homeTaskOop.insurance.responsibility.Responsibility;
 public class InsuranceRunner {
 
 	public static void main(String[] args) {
-		List <Insurance> insuranceBase = new ArrayList <> ();
-						
+		// создаем список страховок всех возможных типов
+		List<Insurance> insuranceBase = new ArrayList<>();
+
 		insuranceBase.add(new HealthInsurance("Белгосстрах", "Иванов", 12, 12500, 35, 7));
 		insuranceBase.add(new LifeInsurance("Белгосстрах", "Петров", 12, 15000, 40, 5));
 		insuranceBase.add(new PersonInsurance("Белгосстрах", "Сидоров", 24, 10000, 25));
 		insuranceBase.add(new PropertyInsurance("Страхстрах", "Васечкина", 12, 1000, 100000, 9));
 		insuranceBase.add(new CarInsurance("Нефтестрах", "Березин", 12, 3200, 89000, 8, 1, 1800));
 		insuranceBase.add(new RealtyInsurance("Страхстрах", "Широкава", 36, 57000, 9000000, 8, 20));
-		insuranceBase.add(new Responsibility ("Страхужасстрах", "Лаптев", 6, 90000, true));
-		insuranceBase.add(new CarResponsibility ("РосМосСтрах", "Жукова", 3, 2000, false, 22, 3000, 1));
-		insuranceBase.add(new ProfessionResponsibility ("Перестрах", "Тряпочкина", 6, 500, false, 2));
-		
-		System.out.printf("Сумма всех страховок равна %,.2f \n",InsurensMethods.sumPayout(insuranceBase));
-		
-		/*System.out.println("Возростание степени риска");
-		Collections.sort(insuranceBase, new Comparator<Insurance>() {//сортировка по возростанию степени риска
-	        @Override
-	        public int compare (Insurance arg0, Insurance arg1) {
-	        	if(arg0.riskPower() == arg1.riskPower()) return 0;
-	        	if(arg0.riskPower()<arg1.riskPower()) return 1;
-	        	if(arg0.riskPower()>arg1.riskPower()) return -1;
-	        	return (int) arg0.riskPower();
-	        }
-		});  
-		 for (Insurance i : insuranceBase) {
-	         System.out.println("степень риска"+i.riskPower());
-	     }
-		*/   
+		insuranceBase.add(new Responsibility("Страхужасстрах", "Лаптев", 6, 90000, true));
+		insuranceBase.add(new CarResponsibility("РосМосСтрах", "Жукова", 3, 2000, false, 22, 3000, 1));
+		insuranceBase.add(new ProfessionResponsibility("Перестрах", "Тряпочкина", 6, 500, false, 2));
+
 		Scanner sc = new Scanner(System.in);
-		
-		System.out.println("Введите минимальную сумму страховки");
-		double firstPayout	= sc.nextInt();
-		
-		System.out.println("Введите максимальную сумму страховки");
-		double endPayout	= sc.nextInt();
-		
-		InsurensMethods.findByPayout(insuranceBase,firstPayout,endPayout);
-		
+		boolean exit = false;
+		Locale nowLocale = Locale.getDefault();
+		Locale rusLocale = new Locale("ru", "RU");
+		Locale engLocale = new Locale("en", "US");
+
+		while (!exit) {
+			ResourceBundle rb = ResourceBundle.getBundle("homeTaskOop/languages", nowLocale);
+			// вывод текущей даты и времени
+			Date now = new Date();
+			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, nowLocale);
+			System.out.println(df.format(now));
+			// работа с меню
+			System.out.println(rb.getString("menu"));
+			System.out.println(rb.getString("menuOne"));
+			System.out.println(rb.getString("menuTwo"));
+			System.out.println(rb.getString("menuThree"));
+			System.out.println(rb.getString("menuFour"));
+			System.out.println(rb.getString("menuFive"));
+
+			int numMenu = sc.nextInt();
+			switch (numMenu) {
+			case 1:
+				nowLocale = rusLocale;
+				break;
+			case 2:
+				nowLocale = engLocale;
+				break;
+			// выводим сумму страховок
+			case 3:
+				System.out.print(rb.getString("sumPayout"));
+				System.out.println(InsurensMethods.sumPayout(insuranceBase) + "\n");
+				break;
+			// выводим список страховок соответствующих выбору пользователя
+			case 4:
+				System.out.println(rb.getString("minsum"));
+				double firstPayout = sc.nextInt();
+				System.out.println(rb.getString("maxsum"));
+				double endPayout = sc.nextInt();
+				InsurensMethods.findByPayout(insuranceBase, firstPayout, endPayout);
+				exit = true;
+				break;
+			case 5:
+				exit = true;
+				break;
+			}
+		}
 	}
 }
-
-	
-
-
